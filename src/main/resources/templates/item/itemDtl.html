@@ -189,11 +189,6 @@
                         let result = data.result;
                         let reviewList = result.dtoList;
                         let pageList = result.pageList;
-                        console.log("-----------------start test page-----------------------");
-                        console.log(result);
-                        console.log(`page List = ${pageList[5]}`);
-                        console.log(`result.end = ${result.next}`);
-                        console.log("-----------------end test page-----------------------");
 
                         $(".review-list").empty();
                         $(".review-pagination").empty();
@@ -238,6 +233,8 @@
                 })
             },
             makeReview: function () {
+
+
                 let member = [[${session.memberId}]];
                 console.log("---------- start session memberid ----------")
                 console.log("session.memberId가 아닌 member 조회 고민 중")
@@ -318,7 +315,6 @@
 
         $(document).ready(function () {
             itemDtl.init();
-
         });
 
     </script>

@@ -1,6 +1,5 @@
 package com.shop.repository.custom;
 
-import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.shop.constant.item.ItemSellStatus;
@@ -117,4 +116,50 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
         return new PageImpl<>(results, pageable, totalCount);
     }
 
+    private BooleanExpression categoryCodeLike(String code){
+        return QItem.item.category.stringValue().like(code+"%");
+    }
+
+    @Override
+    public Page<MainItemDto> findByCategoryLike(String categoryCode, Pageable pageable) {
+        QItem item = QItem.item;
+        QItemImg itemImg = QItemImg.itemImg;
+
+        List<MainItemDto> results = queryFactory.select(
+                        new QMainItemDto(
+                                item.id,
+                                item.itemNm,
+                                item.itemDetail,
+                                itemImg.imgUrl,
+                                item.price)
+                ).from(itemImg)
+                .join(itemImg.item, item)
+                .where(itemImg.repimgYn.eq("Y"))
+                .where(categoryCodeLike(categoryCode))
+                .orderBy(item.id.desc())
+                .limit(pageable.getPageSize())
+                .offset(pageable.getOffset())
+                .fetch();
+
+        Long totalCount = queryFactory.select(QItem.item.count()).from(QItem.item)
+                .where(categoryCodeLike(categoryCode))
+                .orderBy(QItem.item.id.desc())
+                .fetchOne();
+
+        return new PageImpl<>(results, pageable, totalCount);
+    }
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+

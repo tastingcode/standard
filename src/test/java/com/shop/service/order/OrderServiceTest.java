@@ -10,7 +10,6 @@ import com.shop.entity.member.MemberRepository;
 import com.shop.entity.order.Order;
 import com.shop.entity.order.OrderRepository;
 import com.shop.entity.order_item.OrderItem;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

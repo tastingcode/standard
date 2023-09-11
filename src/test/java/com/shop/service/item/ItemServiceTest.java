@@ -6,7 +6,6 @@ import com.shop.entity.item.Item;
 import com.shop.entity.item.ItemRepository;
 import com.shop.entity.item_img.ItemImg;
 import com.shop.entity.item_img.ItemImgRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional

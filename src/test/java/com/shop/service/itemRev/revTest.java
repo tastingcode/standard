@@ -1,11 +1,17 @@
 package com.shop.service.itemRev;
 
+import com.shop.constant.category.Category;
+import com.shop.entity.item.Item;
 import com.shop.entity.item.ItemRepository;
 import com.shop.entity.item_rev.ItemRevRepository;
 import com.shop.entity.member.MemberRepository;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @SpringBootTest
 @Transactional
@@ -51,5 +57,6 @@ public class revTest {
 
     }
     */
+
 
 }

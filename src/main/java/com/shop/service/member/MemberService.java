@@ -50,8 +50,6 @@ public class MemberService implements UserDetailsService {
             request.getSession().setAttribute("memberId", member.getId());
         }
 
-
-
         return User.builder()
                 .username(member.getEmail())
                 .password(member.getPassword())

@@ -129,7 +129,7 @@
 					text: "Are you sure you want to logout?",   
 					type: "warning",   
 					showCancelButton: true,   
-					confirmButtonColor: "#DD6B55",   
+					// confirmButtonColor: "#DD6B55",
 					confirmButtonText: "Yes, I'm out!", 
 					cancelButtonText: "No, stay plx!", 
 					closeOnConfirm: false,

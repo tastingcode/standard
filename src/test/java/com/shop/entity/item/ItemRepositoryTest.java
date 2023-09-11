@@ -3,7 +3,9 @@ package com.shop.entity.item;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.shop.constant.category.Category;
 import com.shop.constant.item.ItemSellStatus;
+import com.shop.service.category.CategoryService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +13,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.util.StringUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @SpringBootTest
@@ -25,18 +27,23 @@ class ItemRepositoryTest {
     @Autowired
     ItemRepository itemRepository;
 
-    @PersistenceContext
+    @Autowired
+    CategoryService categoryService;
+
+    @Autowired
     EntityManager em;
 
     @Test
     @DisplayName("상품 저장 테스트")
     public void createItemTest() {
+        Category category = Category.MEN_TOP;
         Item item = Item.builder()
                 .itemNm("테스트 상품")
                 .price(10000)
                 .itemDetail("상세 설명")
                 .itemSellStatus(ItemSellStatus.SELL)
                 .stockNumber(100)
+                .category(category)
                 .build();
 
         Item savedItem = itemRepository.save(item);
@@ -45,6 +52,7 @@ class ItemRepositoryTest {
     }
 
     public void createItemList() {
+        Category category = Category.MEN_TOP;
         for (int i = 1; i <= 10; i++) {
             Item item = Item.builder()
                     .itemNm("테스트 상품" + i)
@@ -52,6 +60,7 @@ class ItemRepositoryTest {
                     .itemDetail("상세 설명" + i)
                     .itemSellStatus(ItemSellStatus.SELL)
                     .stockNumber(100)
+                    .category(category)
                     .build();
 
             itemRepository.save(item);
@@ -143,6 +152,7 @@ class ItemRepositoryTest {
     }
 
     public void createItemList2(){
+        Category category = Category.MEN_TOP;
         for (int i = 1; i <= 5; i++) {
             Item item = Item.builder()
                     .itemNm("테스트 상품" + i)
@@ -150,6 +160,7 @@ class ItemRepositoryTest {
                     .itemDetail("테스트 상품 상세 설명" + i)
                     .itemSellStatus(ItemSellStatus.SELL)
                     .stockNumber(100)
+                    .category(category)
                     .build();
             itemRepository.save(item);
         }
@@ -161,6 +172,7 @@ class ItemRepositoryTest {
                     .itemDetail("테스트 상품 상세 설명" + i)
                     .itemSellStatus(ItemSellStatus.SOLD_OUT)
                     .stockNumber(0)
+                    .category(category)
                     .build();
             itemRepository.save(item);
         }
@@ -195,4 +207,6 @@ class ItemRepositoryTest {
         }
 
     }
+
+
 }

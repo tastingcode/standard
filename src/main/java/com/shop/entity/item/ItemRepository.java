@@ -1,5 +1,6 @@
 package com.shop.entity.item;
 
+import com.shop.constant.category.Category;
 import com.shop.repository.custom.ItemRepositoryCustom;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -24,6 +25,13 @@ public interface ItemRepository extends JpaRepository<Item, Long>, QuerydslPredi
     @Query(value = "select * from item i where i.item_detail like %:itemDetail% order by i.price desc",
             nativeQuery = true)
     List<Item> findByItemDetailByNative(@Param("itemDetail") String itemDetail);
+
+
+    @Query("select i from Item i where i.category = :category")
+    List<Item> findByCategory(@Param("category") Category category);
+
+//    @Query(value = "select * from Item i where i.category like :category%", nativeQuery = true)
+//    List<Item> findByCategoryLike(@Param("category") String categoryCode);
 
 }
 

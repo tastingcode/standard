@@ -8,7 +8,6 @@ import com.shop.entity.item.Item;
 import com.shop.entity.item.ItemRepository;
 import com.shop.entity.member.Member;
 import com.shop.entity.member.MemberRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,14 +1,14 @@
 package com.shop.entity.item;
 
+import com.shop.config.CategoryToCodeConverter;
+import com.shop.constant.category.Category;
 import com.shop.constant.item.ItemSellStatus;
 import com.shop.dto.item.ItemFormDto;
 import com.shop.entity.BaseEntity;
-import com.shop.entity.category.Category;
 import com.shop.exception.order.OutOfStockException;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -38,17 +38,19 @@ public class Item extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ItemSellStatus itemSellStatus;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id")
+    @Convert(converter = CategoryToCodeConverter.class)
+    @Column(name = "category")
     private Category category;
 
+
     @Builder
-    private Item(String itemNm, int price, int stockNumber, String itemDetail, ItemSellStatus itemSellStatus) {
+    private Item(String itemNm, int price, int stockNumber, String itemDetail, ItemSellStatus itemSellStatus, Category category) {
         this.itemNm = itemNm;
         this.price = price;
         this.stockNumber = stockNumber;
         this.itemDetail = itemDetail;
         this.itemSellStatus = itemSellStatus;
+        this.category = category;
     }
 
     public void updateItem(ItemFormDto itemFormDto) {
@@ -57,6 +59,7 @@ public class Item extends BaseEntity {
         this.stockNumber = itemFormDto.getStockNumber();
         this.itemDetail = itemFormDto.getItemDetail();
         this.itemSellStatus = itemFormDto.getItemSellStatus();
+        this.category = Category.ofCode(itemFormDto.getCode());
     }
 
     public void removeStock(int stockNumber) {
@@ -70,5 +73,7 @@ public class Item extends BaseEntity {
     public void addStock(int stockNumber){
         this.stockNumber += stockNumber;
     }
+
+
 
 }

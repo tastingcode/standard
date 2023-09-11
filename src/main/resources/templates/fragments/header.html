@@ -11,29 +11,30 @@
                 aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <a class="navbar-brand" href="/">The #</a>
+        <a class="navbar-brand" href="/">shop</a>
 
         <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
             <ul class="navbar-nav menu mr-auto mt-2 mt-lg-0">
 
-                <li class="nav-item">
-                    <a class="nav-link" href="/">//전체</a>
+                <!-- 상의 -->
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Top <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/item/list?code=C11">전체</a></li>
+                        <li><a href="/item/list?code=C111">코트</a></li>
+                        <li><a href="/item/list?code=C112">자켓</a></li>
+                    </ul>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/">//상의</a>
+
+                <!-- 하의 -->
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Bottom <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/item/list?code=C12">전체</a></li>
+                        <li><a href="/item/list?code=C121">슬랙스</a></li>
+                    </ul>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/">//코트</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/">//패딩</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/">//하의</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/">//슬랙스</a>
-                </li>
+
                 <li class="nav-item" sec:authorize="hasAnyAuthority('ROLE_USER')">
                     <a class="nav-link" href="/cart">장바구니</a>
                 </li>
