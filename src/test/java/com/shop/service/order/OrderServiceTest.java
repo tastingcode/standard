@@ -65,6 +65,7 @@ public class OrderServiceTest {
 
     @Test
     @DisplayName("주문 테스트")
+    @Transactional
     public void order() {
         //given
         Item item = saveItem();
@@ -94,6 +95,7 @@ public class OrderServiceTest {
 
     @Test
     @DisplayName("주문 취소 테스트")
+    @Transactional
     public void cancelOrder() {
         //given
         Item item = saveItem();
