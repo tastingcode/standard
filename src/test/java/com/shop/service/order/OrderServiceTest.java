@@ -42,6 +42,9 @@ public class OrderServiceTest {
     @Autowired
     MemberRepository memberRepository;
 
+    @Autowired
+    OrderServiceFacade orderServiceFacade;
+
     public Item saveItem() {
         Item item = Item.builder()
                 .itemNm("테스트 상품")
@@ -137,7 +140,7 @@ public class OrderServiceTest {
         for (int i = 0; i < threadCount; i++) {
             executorService.submit(() -> {
                 try {
-                    orderService.order(orderDto, member.getEmail());
+                    orderServiceFacade.order(orderDto, member.getEmail());
                 } finally {
                     countDownLatch.countDown();
                 }
