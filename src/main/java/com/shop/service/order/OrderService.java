@@ -34,7 +34,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final ItemImgRepository itemImgRepository;
 
-    public synchronized Long order(OrderDto orderDto, String email){
+    public Long order(OrderDto orderDto, String email){
         Item item = itemRepository.findById(orderDto.getItemId()).
                 orElseThrow(EntityNotFoundException::new);
         Member member = memberRepository.findByEmail(email);
