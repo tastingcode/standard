@@ -14,6 +14,7 @@ import com.shop.entity.item.ItemRepository;
 import com.shop.entity.member.Member;
 import com.shop.entity.member.MemberRepository;
 import com.shop.service.order.OrderService;
+import com.shop.service.order.OrderServiceFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +35,7 @@ public class CartService {
     private final CartItemRepository cartItemRepository;
 
     private final OrderService orderService;
+    private final OrderServiceFacade orderServiceFacade;
 
     public Long addCart(CartItemDto cartItemDto, String email) {
         Item item = itemRepository.findById(cartItemDto.getItemId())
@@ -114,7 +116,9 @@ public class CartService {
             orderDtoList.add(orderDto);
         }
 
-        Long orderId = orderService.orders(orderDtoList, email);
+
+        Long orderId = orderServiceFacade.orders(orderDtoList, email);
+
 
         for (CartOrderDto cartOrderDto : cartOrderDtoList) {
             CartItem cartItem = cartItemRepository.findById(cartOrderDto.getCartItemId()).orElseThrow(EntityNotFoundException::new);
