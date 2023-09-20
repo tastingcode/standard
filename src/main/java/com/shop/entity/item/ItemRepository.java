@@ -3,11 +3,14 @@ package com.shop.entity.item;
 import com.shop.constant.category.Category;
 import com.shop.repository.custom.ItemRepositoryCustom;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
 
+import javax.persistence.LockModeType;
 import java.util.List;
+import java.util.Optional;
 
 public interface ItemRepository extends JpaRepository<Item, Long>, QuerydslPredicateExecutor<Item>, ItemRepositoryCustom {
 
@@ -33,5 +36,10 @@ public interface ItemRepository extends JpaRepository<Item, Long>, QuerydslPredi
 //    @Query(value = "select * from Item i where i.category like :category%", nativeQuery = true)
 //    List<Item> findByCategoryLike(@Param("category") String categoryCode);
 
-}
 
+    @Override
+    @Lock(value = LockModeType.OPTIMISTIC)
+    @Query("select i from Item i where i.id = :itemId")
+    Optional<Item> findById(@Param("itemId") Long itemId);
+
+}
