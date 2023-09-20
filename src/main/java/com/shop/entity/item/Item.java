@@ -42,6 +42,9 @@ public class Item extends BaseEntity {
     @Column(name = "category")
     private Category category;
 
+    @Version
+    private Long version;
+
 
     @Builder
     private Item(String itemNm, int price, int stockNumber, String itemDetail, ItemSellStatus itemSellStatus, Category category) {
