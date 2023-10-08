@@ -1,5 +1,6 @@
 package com.shop.service.order;
 
+import com.shop.constant.category.Category;
 import com.shop.constant.item.ItemSellStatus;
 import com.shop.constant.order.OrderStatus;
 import com.shop.dto.order.OrderDto;
@@ -19,11 +20,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
-@Transactional
 @TestPropertySource(locations = "classpath:application-test.properties")
 public class OrderServiceTest {
 
@@ -39,6 +42,9 @@ public class OrderServiceTest {
     @Autowired
     MemberRepository memberRepository;
 
+    @Autowired
+    OrderServiceFacade orderServiceFacade;
+
     public Item saveItem() {
         Item item = Item.builder()
                 .itemNm("테스트 상품")
@@ -46,6 +52,7 @@ public class OrderServiceTest {
                 .itemDetail("상품 상세 설명")
                 .itemSellStatus(ItemSellStatus.SELL)
                 .stockNumber(100)
+                .category(Category.MEN_TOP)
                 .build();
 
         return itemRepository.save(item);
@@ -61,6 +68,7 @@ public class OrderServiceTest {
 
     @Test
     @DisplayName("주문 테스트")
+    @Transactional
     public void order() {
         //given
         Item item = saveItem();
@@ -80,14 +88,18 @@ public class OrderServiceTest {
 
         int totalPrice = orderDto.getCount() * item.getPrice();
 
+
         //then
+        Item findItem = itemRepository.findById(item.getId())
+                .orElseThrow();
         assertThat(totalPrice).isEqualTo(order.getTotalPrice());
 
     }
 
     @Test
     @DisplayName("주문 취소 테스트")
-    public void cancelOrder(){
+    @Transactional
+    public void cancelOrder() {
         //given
         Item item = saveItem();
         Member member = saveMember();
@@ -105,6 +117,42 @@ public class OrderServiceTest {
         //then
         assertThat(OrderStatus.CANCEL).isEqualTo(order.getOrderStatus());
         assertThat(100).isEqualTo(item.getStockNumber());
+    }
+
+
+    @Test
+    @DisplayName("동시 주문 테스트")
+    public void concurrentOrder() throws InterruptedException {
+        //given
+        Item item = saveItem();
+        Member member = saveMember();
+
+        OrderDto orderDto = new OrderDto();
+        orderDto.setItemId(item.getId());
+        orderDto.setCount(5);
+
+
+        int threadCount = 20;
+        ExecutorService executorService = Executors.newFixedThreadPool(threadCount);
+        CountDownLatch countDownLatch = new CountDownLatch(threadCount);
+
+        //when
+        for (int i = 0; i < threadCount; i++) {
+            executorService.submit(() -> {
+                try {
+                    orderServiceFacade.order(orderDto, member.getEmail());
+                } finally {
+                    countDownLatch.countDown();
+                }
+            });
+        }
+
+        countDownLatch.await();
+
+        //then
+        Item findItem = itemRepository.findById(item.getId()).orElseThrow();
+        assertThat(findItem.getStockNumber()).isEqualTo(0);
+
     }
 
 }

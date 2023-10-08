@@ -2,6 +2,7 @@ package com.shop.web.order;
 
 import com.shop.dto.order.OrderDto;
 import com.shop.service.order.OrderService;
+import com.shop.service.order.OrderServiceFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,7 @@ import java.util.Map;
 public class OrderApiController {
 
     private final OrderService orderService;
+    private final OrderServiceFacade orderServiceFacade;
 
     @PostMapping("/order")
     public ResponseEntity<Map<String, Object>> order(@RequestBody @Valid OrderDto orderDto,
@@ -44,13 +46,15 @@ public class OrderApiController {
         Long orderId;
 
         try {
-            orderId = orderService.order(orderDto, email);
+            orderId = orderServiceFacade.order(orderDto, email);
             result.put("orderId", orderId);
             result.put("code", HttpStatus.OK);
         } catch (Exception e) {
             result.put("message", e.getMessage());
             result.put("code", HttpStatus.BAD_REQUEST);
         }
+
+
 
         return ResponseEntity.ok(result);
     }
