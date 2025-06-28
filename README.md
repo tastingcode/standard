@@ -48,4 +48,4 @@ java, Spring, Jpa, Query DSL, REST API 등을 활용한 표준 쇼핑몰
 
 
 ## ✅ WIKI
-해당 프로젝트의 모든 정보는 [WIKI](https://github.com/wiseitree/standard/wiki)를 통해 참고하실 수 있습니다.
+해당 프로젝트의 모든 정보는 [WIKI](https://github.com/tastingcode/standard/wiki)를 통해 참고하실 수 있습니다.
